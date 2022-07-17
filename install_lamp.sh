@@ -39,5 +39,41 @@ sudo systemctl restart apache2
 # ufw allow 443/tcp
 # sudo systemctl start uwf
 # установка LetsEncrypt
-
+# выполнить mysql_secure_installation
+# выполнить  настройку ДБ с созданием  УЗ и прав
+# mysql -u root -p
+# замена на иной  и удаление 000-default.conf??
+sudo curl http://localhost:81
+# !!! для развития --- 
+# sudo apt install uwf
+# uwf allow 80/tcp
+# ufw allow 443/tcp
+# sudo systemctl start uwf
+# установка LetsEncrypt
+sudo apt install certbot python3-certbot-apache
+sudo systemctl reload apache2
+# создание  файла well-known.conf
+sudo mkdir -p /var/lib/letsencrypt/.well-known
+sudo chgrp www-data /var/lib/letsencrypt
+sudo chmod g+s /var/lib/letsencrypt
+#create a well-known.conf file for Let’s Encrypt to validate your domain
+sudo mkdir -p /var/lib/letsencrypt/.well-known
+sudo chgrp www-data /var/lib/letsencrypt
+sudo chmod g+s /var/lib/letsencrypt
+sudo cp /home/prkpo/script/well-known.conf /var/lib/letsencrypt
+sudo a2enmod ssl
+sudo a2enmod headers
+sudo a2enmod http2
+sudo a2enconf well-known
+sudo systemctl restart apache2
+# конфигурирование LetsEncrypt for Apache
+sudo certbot --apache -d site.com
+# ввести  почту, выбрать  домен
+# autoupdate Letsencrypt
+sudo crontab -e
+#sudo 52 10 * * * root /usr/bin/certbot renew >/dev/null 2>&1
+sudo ufw status
+sudo ufw allow 'Apache Full' # http/https
+sudo ufw delete allow 'Apache'
+sudo ufw status
 
